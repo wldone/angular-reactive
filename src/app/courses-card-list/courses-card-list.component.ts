@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { filter, tap } from 'rxjs/operators';
+import { CourseDialogComponent } from '../course-dialog/course-dialog.component';
 import { Course } from '../model/course';
 
 @Component({
@@ -30,7 +31,7 @@ export class CoursesCardListComponent implements OnInit {
 
     dialogConfig.data = course;
 
-    const dialogRef = this.dialog.open(CoursesCardListComponent, dialogConfig);
+    const dialogRef = this.dialog.open(CourseDialogComponent, dialogConfig);
 
     dialogRef.afterClosed()
       .pipe(
