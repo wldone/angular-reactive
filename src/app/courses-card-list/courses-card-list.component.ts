@@ -1,4 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { filter, tap } from 'rxjs/operators';
 import { Course } from '../model/course';
 
 @Component({
@@ -10,11 +12,32 @@ export class CoursesCardListComponent implements OnInit {
 
   @Input()
   courses: Course[] = []
+  @Output()
+  private coursesChanged = new EventEmitter()
 
-  constructor() { }
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit() {
+  }
 
+  editCourse(course: Course) {
+
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "400px";
+
+    dialogConfig.data = course;
+
+    const dialogRef = this.dialog.open(CoursesCardListComponent, dialogConfig);
+
+    dialogRef.afterClosed()
+      .pipe(
+        filter(val => !!val),
+        tap(() => this.coursesChanged.emit())
+      )
+      .subscribe()
   }
 
 }
